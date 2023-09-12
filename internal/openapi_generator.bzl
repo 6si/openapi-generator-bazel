@@ -76,6 +76,10 @@ def _new_generator_command(ctx, declared_dir, rjars):
             template_dir = ctx.attr.template_dir.files.to_list()[0].path,
         )
 
+    if ctx.attr.package_name:
+        gen_cmd += " --package-name {package_name}".format(
+            package_name = ctx.attr.package_name,
+        )
     if ctx.attr.api_package:
         gen_cmd += " --api-package {package}".format(
             package = ctx.attr.api_package,
@@ -178,6 +182,7 @@ _openapi_generator = rule(
         "template_dir": attr.label(allow_single_file = True),
         "config": attr.label(allow_single_file = True),
         "generator": attr.string(mandatory = True),
+        "package_name": attr.string(mandatory = True),
         "api_package": attr.string(),
         "invoker_package": attr.string(),
         "model_package": attr.string(),
